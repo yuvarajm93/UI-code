@@ -127,7 +127,7 @@ function processRequest(e) {
       disp += '<tr><td>' + response["Stock list"][i] + '<td><tr>';
       // console.log(response["Stock list"][i]);
     }
-    disp = '</table>';
+    disp += '</table>';
     // var test = "hello";
     document.getElementById("foo").innerHTML = disp;//"<table><tr><td>foo</td><td>bar</td></tr><tr><td>foo</td><td>bar</td></tr></table>";
     console.log(response["Stock list"]);
@@ -136,7 +136,7 @@ function processRequest(e) {
 
 </script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script type="text/javascript" src="https://api.myjson.com/bins/r7w0i"></script>
+<!-- <script type="text/javascript" src="https://api.myjson.com/bins/r7w0i"></script> -->
 </head>
 <body>
 <div id="chartContainer" style="height: 300px; width: 100%;">
