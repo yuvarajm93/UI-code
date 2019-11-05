@@ -28,6 +28,9 @@
   <input type="text" name="search" placeholder="Search" aria-label="Search">
 </div>
 <p id="foo"></p>
+<p id="stock_price"></p>
+<p id="Funds"></p>
+<p id="list"></p>
 
 <form>
 
@@ -39,7 +42,7 @@
             <option>TCS</option>
     </div>
     <div class="stocks"></div>
-    <script>
+   <script>
     // $.getJSON('https://api.myjson.com/bins/1gv7ze', function(stock){
     //
     //   var text = Stock list:{
@@ -112,16 +115,16 @@ window.onload = function () {
 	});
 	chart.render();
 }
+// Stock list!!
+var xhr1 = new XMLHttpRequest();
+xhr1.open('GET', "https://api.myjson.com/bins/r7w0i", true);
+xhr1.send();
 
-var xhr = new XMLHttpRequest();
-xhr.open('GET', "https://api.myjson.com/bins/r7w0i", true);
-xhr.send();
+xhr1.onreadystatechange = processRequestFoo;
 
-xhr.onreadystatechange = processRequest;
-
-function processRequest(e) {
-  if (xhr.readyState == 4 && xhr.status == 200) {
-    var response = JSON.parse(xhr.responseText);
+function processRequestFoo(e) {
+  if (xhr1.readyState == 4 && xhr1.status == 200) {
+    var response = JSON.parse(xhr1.responseText);
     var disp = '<table>';
     for(var i=0; i<response["Stock list"].length; i++) {
       disp += '<tr><td>' + response["Stock list"][i] + '<td><tr>';
@@ -131,6 +134,56 @@ function processRequest(e) {
     // var test = "hello";
     document.getElementById("foo").innerHTML = disp;//"<table><tr><td>foo</td><td>bar</td></tr><tr><td>foo</td><td>bar</td></tr></table>";
     console.log(response["Stock list"]);
+  }
+}
+
+// Price!!
+var xhr = new XMLHttpRequest();
+
+xhr.open('GET', "http://localhost:3030/mydb", true);
+
+xhr.setRequestHeader('Access-Control-Allow-Origin','*');
+xhr.send();
+
+xhr.onreadystatechange = processRequestPrice;
+
+function processRequestPrice(e) {
+  if (xhr.readyState == 4 && xhr.status == 200) {
+    var response = JSON.parse(xhr.responseText);
+    var disp = '<table>';
+    for(var i=0; i<response["stock_price"].length; i++) {
+      disp += '<tr><td>' + response["stock_price"][i].org + '</td>  <td>' + response["stock_price"][i].price + '</td><tr>';
+        console.log(response["stock_price"][i]);
+    }
+    disp += '</table>';
+    // var test = "hello";
+    document.getElementById("stock_price").innerHTML = disp;//"<table><tr><td>foo</td><td>bar</td></tr><tr><td>foo</td><td>bar</td></tr></table>";
+    console.log(response["stock_price"]);
+  }
+}
+
+//Funds
+
+var xhr2 = new XMLHttpRequest();
+xhr2.open('GET', "https://api.myjson.com/bins/18imgo", true);
+xhr2.send();
+
+xhr2.onreadystatechange = processRequestFunds;
+
+function processRequestFunds(e) {
+  if (xhr2.readyState == 4 && xhr2.status == 200) {
+    var response = JSON.parse(xhr2.responseText);
+    var disp = '<table>';
+    //console.log(response, Object.keys(response["Funds"]).length);
+    var keys = Object.keys(response["Funds"]);
+    for(var i=0; i<keys.length; i++) {
+      disp += '<tr><td>' + keys[i] + ': <td><td>'+ response["Funds"][keys[i]] +'</td><tr>';
+      // console.log(response["Stock list"][i]);
+    }
+    disp += '</table>';
+    // var test = "hello";
+    document.getElementById("Funds").innerHTML = disp;//"<table><tr><td>foo</td><td>bar</td></tr><tr><td>foo</td><td>bar</td></tr></table>";
+    console.log(response["Funds"]);
   }
 }
 
